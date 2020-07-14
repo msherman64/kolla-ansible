@@ -594,6 +594,7 @@ prometheus_blackbox_exporter_port: "9115"
 
 # Prometheus instance label to use for metrics
 prometheus_instance_label:
+prometheus_snmp_exporter_port: "9116"
 
 proxysql_admin_port: "6032"
 

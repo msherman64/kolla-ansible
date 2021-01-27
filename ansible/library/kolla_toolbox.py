@@ -125,7 +125,7 @@ class KollaToolboxWorker():
         """Format dict of module parameters into list of 'key=value' pairs."""
         pairs = list()
         for key, value in module_args.items():
-            if isinstance(value, dict):
+            if isinstance(value, (dict, list)):
                 value_json = json.dumps(value)
                 pairs.append(f"{key}='{value_json}'")
             else:

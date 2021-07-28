@@ -37,8 +37,9 @@ scrape_configs:
 {% for host in groups['prometheus-node-exporter'] %}
       - targets:
         - '{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ hostvars[host]['prometheus_node_exporter_port'] }}'
-{% if hostvars[host].prometheus_instance_label | default(false, true) %}
         labels:
+          hostname: '{{ host }}'
+{% if hostvars[host].prometheus_instance_label | default(false, true) %}
           instance: "{{ hostvars[host].prometheus_instance_label }}"
 {% endif %}
 {% endfor %}
@@ -102,8 +103,9 @@ scrape_configs:
 {% for host in groups["prometheus-cadvisor"] %}
       - targets:
         - '{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ hostvars[host]['prometheus_cadvisor_port'] }}'
-{% if hostvars[host].prometheus_instance_label | default(false, true) %}
         labels:
+          hostname: '{{ host }}'
+{% if hostvars[host].prometheus_instance_label | default(false, true) %}
           instance: "{{ hostvars[host].prometheus_instance_label }}"
 {% endif %}
 {% endfor %}
@@ -115,8 +117,9 @@ scrape_configs:
 {% for host in groups['fluentd'] %}
       - targets:
         - '{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ hostvars[host]['prometheus_fluentd_integration_port'] }}'
-{% if hostvars[host].prometheus_instance_label | default(false, true) %}
         labels:
+          hostname: '{{ host }}'
+{% if hostvars[host].prometheus_instance_label | default(false, true) %}
           instance: "{{ hostvars[host].prometheus_instance_label }}"
 {% endif %}
 {% endfor %}

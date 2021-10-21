@@ -705,6 +705,8 @@ prometheus_blackbox_exporter_port: "9115"
 prometheus_instance_label:
 prometheus_snmp_exporter_port: "9116"
 
+prometheus_ipmi_exporter_port: "9290"
+
 proxysql_admin_port: "6032"
 # Integer variable to set ProxySQL version. Valid options are 2 and 3
 # When it's set to 2 (Default), ProxySQL 2.7.x is deployed.
@@ -1361,6 +1363,7 @@ enable_prometheus_libvirt_exporter: "{{ enable_prometheus | bool and enable_nova
 enable_prometheus_etcd_integration: "{{ enable_prometheus | bool and enable_etcd | bool }}"
 enable_prometheus_proxysql_exporter: "{{ enable_prometheus | bool and enable_proxysql | bool }}"
 enable_prometheus_jupyterhub_exporter: "{{ enable_jupyterhub | bool and enable_prometheus | bool }}"
+enable_prometheus_ipmi_exporter: "{{ enable_prometheus | bool }}"
 
 prometheus_alertmanager_user: "admin"
 prometheus_ceph_exporter_interval: "{{ prometheus_scrape_interval }}"

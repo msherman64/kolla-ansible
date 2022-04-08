@@ -91,3 +91,35 @@
   when:
     - manila_policy_file is defined
   with_dict: "{{ manila_services | select_services_enabled_and_mapped_to_host }}"
+
+- name: Copying over ganesha.conf
+  vars:
+    service: "{{ manila_services[item] }}"
+  template:
+    src: "ganesha.conf.j2"
+    dest: "{{ node_config_directory }}/{{ item }}/ganesha.conf"
+    mode: "0600"
+  become: true
+  when:
+    - inventory_hostname in groups[service.group]
+    - service.enabled | bool
+  with_items:
+    - "manila-nfs-ganesha"
+  notify:
+    - Restart manila-nfs-ganesha container
+
+- name: Copying over ceph.conf
+  vars:
+    service: "{{ manila_services[item] }}"
+  template:
+    src: "{{ node_custom_config }}/manila/ceph.conf"
+    dest: "{{ node_config_directory }}/{{ item }}/ceph.conf"
+    mode: "0600"
+  become: true
+  when:
+    - inventory_hostname in groups[service.group]
+    - service.enabled | bool
+  with_items:
+    - "manila-nfs-ganesha"
+  notify:
+    - Restart manila-nfs-ganesha container

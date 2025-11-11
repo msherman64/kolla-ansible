@@ -1,22 +1,24 @@
 name: CI
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - 'chameleoncloud/*'
+  pull_request:
 
 jobs:
-  linters:
+  all-in-one:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
       - name: Install dependencies
-        run: pip install tox
-      - name: Run Linters
-        run: tox -e linters
-  prechecks:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-      - name: Install dependencies
-        run: pip install tox
-      - name: Run Prechecks
-        run: tox -e prechecks
+        run: |
+          pip install \
+          tox \
+          ansible
+      - name: the included tests
+        run: |
+            ansible-playbook -i tests/inventory tests/run.yml \
+            -e action=deploy \
+            -e scenario=all-in-one \
+            -e kolla_install_type=source

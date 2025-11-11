@@ -18,7 +18,7 @@ jobs:
           ansible
       - name: the included tests
         run: |
-            ansible-playbook -i tests/inventory tests/run.yml \
+            ansible-playbook -i .github/ci/test-inventory tests/run.yml \
             -e action=deploy \
             -e scenario=all-in-one \
             -e kolla_install_type=source

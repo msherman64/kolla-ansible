@@ -1,0 +1,28 @@
+# This is a minimal inventory file for the 'all-in-one' CI scenario
+
+[control]
+localhost ansible_connection=local
+
+[network]
+localhost ansible_connection=local
+
+[compute]
+localhost ansible_connection=local
+
+[storage]
+localhost ansible_connection=local
+
+[monitoring]
+localhost ansible_connection=local
+
+# Define the top-level groups
+[all:children]
+control
+network
+compute
+storage
+monitoring
+
+[all:vars]
+# This tells Ansible to use the python3 interpreter on the local machine
+ansible_python_interpreter=/usr/bin/python3

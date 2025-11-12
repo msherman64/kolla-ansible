@@ -613,6 +613,10 @@ letsencrypt
 
 [letsencrypt-lego:children]
 letsencrypt
+
+[k3s:children]
+control
+
 [doni:children]
 control
 

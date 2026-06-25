@@ -13,7 +13,9 @@
   with_dict: "{{ doni_services }}"
 
 - name: Check if policies shall be overwritten
-  local_action: stat path="{{ item }}"
+  stat:
+    path: "{{ item }}"
+  delegate_to: localhost
   run_once: True
   register: doni_policy
   with_first_found:
@@ -83,7 +85,9 @@
     - "Restart {{ item.key }} container"
 
 - name: Check if kubeconfig exists for k8s worker plugin
-  local_action: stat path="{{ item }}"
+  stat:
+    path: "{{ item }}"
+  delegate_to: localhost
   run_once: True
   register: doni_kubeconfig
   with_first_found:

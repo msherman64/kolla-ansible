@@ -25,7 +25,7 @@
   notify:
     - "Restart {{ item.key }} container"
 
-- name: test if cluster is already configured
+- name: Test if cluster is already configured
   become: true
   command: >
     docker exec {{ k3s_services['k3s'].container_name }}
@@ -39,7 +39,7 @@
   ignore_errors: true
   changed_when: false
 
-- name: set k3s_bootstrap for initial node in cluster
+- name: Set k3s_bootstrap for initial node in cluster
   set_fact:
     k3s_bootstrap: true
   when:

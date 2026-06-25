@@ -129,13 +129,13 @@ def gen_commandline(params):
             # of variable references and extra_vars which contain the values.
             # The --extra-vars functionality supports JSON serialized input.
             module_arg_mapping = {
-              'module_arg_{}'.format(key): value
-              for key, value in module_args.items()
+                'module_arg_{}'.format(key): value
+                for key, value in module_args.items()
             }
             command.extend(['--extra-vars', json.dumps(module_arg_mapping)])
-            module_args = (
-              ' '.join("{}='{{{{ module_arg_{} }}}}'".format(key, key)
-                       for key in module_args.keys()))
+            module_args = ' '.join(
+                "{}='{{{{ module_arg_{} }}}}'".format(key, key)
+                for key in module_args.keys())
         if isinstance(module_args, list):
             module_args = ' '.join(module_args)
         command.extend(['-a', module_args])

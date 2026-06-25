@@ -1,5 +1,5 @@
 ---
-- name: wait for k3s to start
+- name: Wait for k3s to start
   become: true
   command: >
     docker exec {{ k3s_services['k3s'].container_name }}
@@ -14,7 +14,7 @@
 
 # runs on first k3s server host
 # exec and extract kubeconfig to variable
-- name: get kubeconfig from k3s
+- name: Get kubeconfig from k3s
   become: true
   command: >
     docker exec {{ k3s_services['k3s'].container_name }}
@@ -25,7 +25,7 @@
   changed_when: false
   no_log: true
 
-- name: set fact for kubeconfig
+- name: Set fact for kubeconfig
   vars:
     kubeconfig_data: "{{ hostvars[groups['k3s'][0]]['kubeconfig_remote']['stdout'] | from_yaml}}"
   set_fact:
@@ -49,11 +49,11 @@
   delegate_to: "{{ groups['deployment'][0] }}"
   run_once: true
 
-- name: run kubectl apply from the deploy node
+- name: Run kubectl apply from the deploy node
   delegate_to: "{{ groups['deployment'][0] }}"
   run_once: true
   block:
-    - name: ensure deploy host has needed deps for following steps
+    - name: Ensure deploy host has needed deps for following steps
       pip:
         name:
           - kubernetes
@@ -63,7 +63,7 @@
         url: "https://raw.githubusercontent.com/projectcalico/calico/{{ calico_version }}/manifests/tigera-operator.yaml"
         dest: "/tmp/tigera-operator.yaml"
         mode: '0644'
-    - name: installing calico operator
+    - name: Installing calico operator
       kubernetes.core.k8s:
         state: present
         apply: yes
@@ -72,7 +72,7 @@
     - name: Wait for calico operator to be ready
       kubernetes.core.k8s_info:
         kind: Deployment
-        name: tigera-operator
+        name: Tigera-operator
         namespace: tigera-operator
         kubeconfig: "{{ node_custom_config }}/kubeconfig.yml"
         wait: yes
@@ -84,14 +84,14 @@
     - name: Wait for Installation CRD to be registered
       kubernetes.core.k8s_info:
         kind: CustomResourceDefinition
-        name: installations.operator.tigera.io
+        name: Installations.operator.tigera.io
         kubeconfig: "{{ node_custom_config }}/kubeconfig.yml"
         wait: yes
         wait_condition:
           type: Established
           status: "True"
         wait_timeout: 300
-    - name: patching calico custom resources
+    - name: Patching calico custom resources
       kubernetes.core.k8s:
         state: present
         apply: yes
@@ -101,7 +101,7 @@
     - name: Wait for Calico API server deployment to exist
       kubernetes.core.k8s_info:
         kind: Deployment
-        name: calico-apiserver
+        name: Calico-apiserver
         namespace: calico-apiserver
         kubeconfig: "{{ node_custom_config }}/kubeconfig.yml"
       register: apiserver_deployment
@@ -111,7 +111,7 @@
     - name: Wait for Calico API server to be ready
       kubernetes.core.k8s_info:
         kind: Deployment
-        name: calico-apiserver
+        name: Calico-apiserver
         namespace: calico-apiserver
         kubeconfig: "{{ node_custom_config }}/kubeconfig.yml"
         wait: yes
@@ -122,27 +122,27 @@
     - name: Wait for GlobalNetworkPolicy CRD to be registered
       kubernetes.core.k8s_info:
         kind: CustomResourceDefinition
-        name: globalnetworkpolicies.crd.projectcalico.org
+        name: Globalnetworkpolicies.crd.projectcalico.org
         kubeconfig: "{{ node_custom_config }}/kubeconfig.yml"
         wait: yes
         wait_condition:
           type: Established
           status: "True"
         wait_timeout: 300
-    - name: applying calico global network policies
+    - name: Applying calico global network policies
       kubernetes.core.k8s:
         state: present
         apply: yes
         src: "calico-global-networkpolicy.yaml"
         kubeconfig: "{{ node_custom_config }}/kubeconfig.yml"
 
-    - name: applying nvidia device plugin
+    - name: Applying nvidia device plugin
       kubernetes.core.k8s:
         state: present
         apply: yes
         template: "templates/nvidia-device-plugin.yaml.j2"
         kubeconfig: "{{ node_custom_config }}/kubeconfig.yml"
-    - name: applying smarter devices manager plugin
+    - name: Applying smarter devices manager plugin
       kubernetes.core.k8s:
         state: present
         apply: yes

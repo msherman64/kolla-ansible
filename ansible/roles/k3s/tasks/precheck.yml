@@ -2,9 +2,11 @@
 - name: Get container facts
   become: true
   kolla_container_facts:
+    action: get_containers
     container_engine: "{{ kolla_container_engine }}"
     name:
       - k3s
+  check_mode: false
   register: container_facts
 
 - name: Checking free port for k3s API
@@ -15,5 +17,5 @@
     timeout: 1
     state: stopped
   when:
-    - container_facts['k3s'] is not defined
+    - container_facts.containers['k3s'] is not defined
     - inventory_hostname in groups['k3s']

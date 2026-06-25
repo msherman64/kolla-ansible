@@ -193,4 +193,3 @@
     dimensions: "{{ service.dimensions }}"
   when:
     - kolla_action != "config"
-

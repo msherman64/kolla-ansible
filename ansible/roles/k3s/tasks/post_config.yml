@@ -97,7 +97,7 @@
         apply: yes
         template: "templates/calico-custom-resources.yaml.j2"
         kubeconfig: "{{ node_custom_config }}/kubeconfig.yml"
-    
+
     - name: Wait for Calico API server deployment to exist
       kubernetes.core.k8s_info:
         kind: Deployment

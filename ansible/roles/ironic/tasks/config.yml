@@ -148,8 +148,6 @@
     - service | service_enabled_and_mapped_to_host
     - not ironic_dnsmasq_serve_ipxe | bool
     - ironic_inspector_standalone | bool
-  notify:
-    - Restart ironic-tftp container
 
 - name: Copying ironic-agent kernel and initramfs (PXE)
   vars:
@@ -168,8 +166,6 @@
     - service | service_enabled_and_mapped_to_host
     - not ironic_dnsmasq_serve_ipxe | bool
     - ironic_inspector_standalone | bool
-  notify:
-    - Restart ironic-tftp container
 
 - name: Copying ironic-agent kernel and initramfs (iPXE)
   vars:
@@ -187,8 +183,6 @@
     - groups['ironic-inspector'] | length > 0
     - service | service_enabled_and_mapped_to_host
     - ironic_inspector_standalone | bool
-  notify:
-    - Restart ironic-http container
 
 - name: Copying inspector.ipxe
   vars:
@@ -207,8 +201,6 @@
     - groups['ironic-inspector'] | length > 0
     - service | service_enabled_and_mapped_to_host
     - ironic_inspector_standalone | bool
-  notify:
-    - Restart ironic-http container
 
 - name: Copying ironic-http-httpd.conf
   vars:

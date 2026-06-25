@@ -88,8 +88,6 @@
     - zun_kubeconfig.results
     - zun_services[service_name].enabled | bool
     - inventory_hostname in groups[zun_services[service_name].group]
-  notify:
-    - Restart {{ service_name }} container
 
 - name: Copying over wsgi-zun files for services
   vars:

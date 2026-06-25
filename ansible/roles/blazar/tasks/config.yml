@@ -92,5 +92,3 @@
     - blazar_kubeconfig.results
     - blazar_services[service_name].enabled | bool
     - inventory_hostname in groups[blazar_services[service_name].group]
-  notify:
-    - Restart {{ item.key }} container

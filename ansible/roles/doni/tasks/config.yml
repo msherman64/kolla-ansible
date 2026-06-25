@@ -41,8 +41,6 @@
     - inventory_hostname in groups[item.value.group]
     - item.value.enabled | bool
   with_dict: "{{ doni_services }}"
-  notify:
-    - "Restart {{ item.key }} container"
 
 - name: Copying over doni.conf
   vars:
@@ -62,8 +60,6 @@
     - inventory_hostname in groups[item.value.group]
     - item.value.enabled | bool
   with_dict: "{{ doni_services }}"
-  notify:
-    - "Restart {{ item.key }} container"
 
 - name: Copying over existing policy file
   vars:
@@ -81,8 +77,6 @@
     - inventory_hostname in groups[item.value.group]
     - item.value.enabled | bool
   with_dict: "{{ doni_services }}"
-  notify:
-    - "Restart {{ item.key }} container"
 
 - name: Check if kubeconfig exists for k8s worker plugin
   stat:
@@ -110,5 +104,3 @@
     - doni_kubeconfig.results
     - doni_services[service_name].enabled | bool
     - inventory_hostname in groups[doni_services[service_name].group]
-  notify:
-    - Restart {{ service_name }} container

@@ -7,10 +7,7 @@
     group: "{{ config_owner_group }}"
     mode: "0770"
   become: true
-  when:
-    - inventory_hostname in groups[item.value.group]
-    - item.value.enabled | bool
-  with_dict: "{{ tunelo_services }}"
+  with_dict: "{{ tunelo_services | select_services_enabled_and_mapped_to_host }}"
 
 - name: Check if policies shall be overwritten
   stat:
@@ -37,10 +34,7 @@
     dest: "{{ node_config_directory }}/{{ item.key }}/config.json"
     mode: "0660"
   become: true
-  when:
-    - inventory_hostname in groups[item.value.group]
-    - item.value.enabled | bool
-  with_dict: "{{ tunelo_services }}"
+  with_dict: "{{ tunelo_services | select_services_enabled_and_mapped_to_host }}"
 
 - name: Copying over tunelo.conf
   vars:
@@ -57,9 +51,7 @@
   become: true
   when:
     - item.key in [ "tunelo-api" ]
-    - inventory_hostname in groups[item.value.group]
-    - item.value.enabled | bool
-  with_dict: "{{ tunelo_services }}"
+  with_dict: "{{ tunelo_services | select_services_enabled_and_mapped_to_host }}"
 
 - name: Copying over existing policy file
   vars:
@@ -73,6 +65,4 @@
   when:
     - tunelo_policy_file is defined
     - item.key in services_require_policy_json
-    - inventory_hostname in groups[item.value.group]
-    - item.value.enabled | bool
-  with_dict: "{{ tunelo_services }}"
+  with_dict: "{{ tunelo_services | select_services_enabled_and_mapped_to_host }}"

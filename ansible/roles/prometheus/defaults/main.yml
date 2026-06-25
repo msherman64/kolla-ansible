@@ -215,7 +215,6 @@ prometheus_blackbox_exporter_endpoints: []
 # command line, e.g.:
 #
 # prometheus_openstack_exporter_cmdline_extras: "--disable-slow-metrics"
-prometheus_openstack_exporter_cmdline_extras: ""
 
 ####################
 # SNMP

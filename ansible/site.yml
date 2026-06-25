@@ -1101,7 +1101,7 @@
   roles:
     - { role: skyline,
         tags: skyline }
-        
+
 - name: Apply role doni
   gather_facts: false
   hosts:
